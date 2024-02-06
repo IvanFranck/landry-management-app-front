@@ -1,10 +1,11 @@
+import { NavMobile } from "./components/NavMobile"
 
 function App() {
 
   return (
-    <>
-      <p> Hello </p>
-    </>
+    <div className="w-full min-h-screen bg-slate-200 relative">
+      <NavMobile />
+    </div>
   )
 }
 
