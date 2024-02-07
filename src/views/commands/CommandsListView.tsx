@@ -21,7 +21,7 @@ const commands: CommandListItemProps[] = [
     }
 ]
 
-export const CommandsList = () => {
+export const CommandsListView = () => {
     return (
 
         <div className="w-full flex flex-col space-y-3 px-2">

@@ -35,14 +35,14 @@ export const NavMobile = () => {
                                             damping: 20,
                                             delay: 0.1 + idx / 10,
                                         }}
-                                        key={route.title}
+                                        key={route.id}
                                         className="w-full p-1 text-center"
                                     >
                                         <a
-                                            href={route.href}
+                                            href={route.path}
                                             className="text-2xl"
                                         >
-                                            <span className="uppercase">{route.title}</span>
+                                            <span className="uppercase">{route.id}</span>
                                         </a>
                                     </motion.li>
                                 ))}
