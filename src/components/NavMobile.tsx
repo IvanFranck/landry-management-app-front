@@ -1,11 +1,20 @@
 import { useState } from "react"
 import { Squash as Hamburger } from "hamburger-react"
 import { AnimatePresence, motion } from "framer-motion"
-import { routes } from "@/routes"
 
 export const NavMobile = () => {
 
     const [isOpen, setOpen] = useState(false)
+    const menuLinks = [
+        {
+            title: "home",
+            path: "/"
+        },
+        {
+            title: "commandes",
+            path: "/commands"
+        }
+    ]
 
     return (
         <div className="w-full bg-white border-b border-b-gray-200 grid grid-cols-4 px-2 py-3 justify-items-center items-center mb-4">
@@ -25,7 +34,7 @@ export const NavMobile = () => {
                             className="fixed z-10 top-0 left-0 right-0 h-full shadow-2xl p-5 bg-neutral-950 text-white"
                         >
                             <ul className="h-full flex flex-col justify-center gap-6">
-                                {routes.map((route, idx) => (
+                                {menuLinks.map((route, idx) => (
                                     <motion.li
                                         initial={{ scale: 0, opacity: 0 }}
                                         animate={{ scale: 1, opacity: 1 }}
@@ -35,14 +44,14 @@ export const NavMobile = () => {
                                             damping: 20,
                                             delay: 0.1 + idx / 10,
                                         }}
-                                        key={route.id}
+                                        key={route.title}
                                         className="w-full p-1 text-center"
                                     >
                                         <a
                                             href={route.path}
                                             className="text-2xl"
                                         >
-                                            <span className="uppercase">{route.id}</span>
+                                            <span className="uppercase">{route.title}</span>
                                         </a>
                                     </motion.li>
                                 ))}
