@@ -1,4 +1,5 @@
 import { CommandListItem, CommandListItemProps } from "@/components/app/CommandListItem"
+import { CommandsStatusFilter } from "@/components/app/CommandsStatusFilter"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Plus } from "lucide-react"
@@ -32,6 +33,7 @@ export const CommandsList = () => {
                 </Button>
             </div>
 
+            <CommandsStatusFilter />
 
             <div className="w-full grid gap-2">
                 {commands.map((command, index) => (
