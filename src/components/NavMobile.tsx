@@ -17,7 +17,7 @@ export const NavMobile = () => {
     ]
 
     return (
-        <div className="w-full bg-white border-b border-b-gray-200 grid grid-cols-4 px-2 py-3 justify-items-center items-center mb-4">
+        <div className="w-full bg-white border-b border-b-gray-200 grid grid-cols-4 px-2 py-3 justify-items-center items-center">
             <a href="#" className="col-span-1 justify-self-start">LOGO</a>
             <h2 className="col-span-2 text-lg font-semibold">Commandes</h2>
             <div className=" z-20 col-span-1 justify-self-end">

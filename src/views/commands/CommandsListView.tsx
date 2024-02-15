@@ -24,7 +24,7 @@ const commands: CommandListItemProps[] = [
 export const CommandsListView = () => {
     return (
 
-        <div className="w-full flex flex-col space-y-3 px-2">
+        <div className="w-full flex flex-col space-y-3 px-2 mt-2">
             <div className="w-full flex items-center space-x-2 mb-4">
                 <Input className="bg-white" type="search" placeholder="Rechercher" />
                 <Button className="flex items-center space-x-1" type="submit">

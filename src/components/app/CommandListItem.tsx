@@ -15,6 +15,10 @@ export interface CommandListItemProps {
 
 export const CommandListItem = ({ commandId, price, customerName, status, date }: CommandListItemProps) => {
 
+    // const handleCLick = () => {
+
+    // }
+
     return (
 
         <Card>
