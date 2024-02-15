@@ -1,9 +1,13 @@
-import { RouteObject } from "react-router-dom"
+import { Params, RouteObject } from "react-router-dom"
 import { Root } from "@/views/Root.tsx"
 import { CommandsListView } from "@/views/commands/CommandsListView"
 import { CommandDetailView } from "@/views/commands/CommandDetailsView"
 import ErrorPage from "@/views/error-view"
-import PageLayout from "@/views/page-layout"
+import PageLayout from "@/views/layouts/page-layout"
+import PageTitle from "@/components/app/page-title"
+import { HomeView } from "@/views/home-view"
+import ServicesListView from "@/views/services/services-list-view"
+import { ProfileView } from "@/views/profile-view"
 
 
 export const routes: RouteObject[] = [
@@ -23,20 +27,51 @@ export const routes: RouteObject[] = [
         element: <PageLayout />,
         children: [
             {
+                id: "home",
+                path: '/home',
+                element: <HomeView />
+            },
+            {
                 id: 'Commandes',
                 path: '/commands',
                 children: [
                     {
                         index: true,
-                        element: <CommandsListView />
+                        element: <CommandsListView />,
+                        handle: {
+                            pageTitle: () => <PageTitle pageName="Commandes" />
+                        }
                     },
                     {
                         id: 'commande view',
                         path: ':commandId',
-                        element: <CommandDetailView />
+                        element: <CommandDetailView />,
+                        handle: {
+                            pageTitle: (params: Params) => {
+                                return <PageTitle pageName={`Commande ${params.commandId}`} to='/commands' />
+                            }
+                        }
                     }
                 ]
-            }
+            },
+            {
+                id: "services",
+                path: '/services',
+                children: [
+                    {
+                        index: true,
+                        element: <ServicesListView />,
+                        handle: {
+                            pageTitle: () => <PageTitle pageName="Services" />
+                        }
+                    }
+                ]
+            },
+            {
+                id: "profile",
+                path: '/profile',
+                element: <ProfileView />
+            },
         ]
     }
 

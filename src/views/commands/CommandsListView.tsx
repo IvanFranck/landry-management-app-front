@@ -1,5 +1,5 @@
-import { CommandListItem, CommandListItemProps } from "@/components/app/CommandListItem"
-import { CommandsStatusFilter } from "@/components/app/CommandsStatusFilter"
+import { CommandListItem, CommandListItemProps } from "@/components/app/commands/CommandListItem"
+import { CommandsStatusFilter } from "@/components/app/commands/CommandsStatusFilter"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Plus } from "lucide-react"
