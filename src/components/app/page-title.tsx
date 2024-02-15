@@ -1,12 +1,20 @@
 import { MoveLeft } from "lucide-react"
 import { NavLink } from "react-router-dom"
 
-export default function PageTitle({ pageName, to }: { pageName: string, to: string }) {
+export default function PageTitle({ pageName, to }: { pageName: string, to?: string }) {
 
     return (
-        <NavLink className="w-full flex items-center space-x-1 p-2 text-lg font-medium" to={to}>
-            <MoveLeft size={18} />
-            <span>{pageName}</span>
-        </NavLink>
+        <>
+            {to ?
+                <div className="w-full flex items-center space-x-2 p-2 text-lg font-medium" >
+                    <NavLink to={to}>
+                        <MoveLeft size={20} />
+                    </NavLink>
+                    <span>{pageName}</span>
+                </div>
+                :
+                <div className="w-full flex items-center p-2 text-lg font-medium">{pageName}</div>
+            }
+        </>
     )
 }

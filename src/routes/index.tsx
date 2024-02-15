@@ -5,6 +5,9 @@ import { CommandDetailView } from "@/views/commands/CommandDetailsView"
 import ErrorPage from "@/views/error-view"
 import PageLayout from "@/views/layouts/page-layout"
 import PageTitle from "@/components/app/page-title"
+import { HomeView } from "@/views/home-view"
+import ServicesListView from "@/views/services/services-list-view"
+import { ProfileView } from "@/views/profile-view"
 
 
 export const routes: RouteObject[] = [
@@ -24,6 +27,11 @@ export const routes: RouteObject[] = [
         element: <PageLayout />,
         children: [
             {
+                id: "home",
+                path: '/home',
+                element: <HomeView />
+            },
+            {
                 id: 'Commandes',
                 path: '/commands',
                 children: [
@@ -31,7 +39,7 @@ export const routes: RouteObject[] = [
                         index: true,
                         element: <CommandsListView />,
                         handle: {
-                            pageTitle: () => <PageTitle pageName="Commandes" to='/' />
+                            pageTitle: () => <PageTitle pageName="Commandes" />
                         }
                     },
                     {
@@ -40,13 +48,30 @@ export const routes: RouteObject[] = [
                         element: <CommandDetailView />,
                         handle: {
                             pageTitle: (params: Params) => {
-                                console.log('data routes', params)
                                 return <PageTitle pageName={`Commande ${params.commandId}`} to='/commands' />
                             }
                         }
                     }
                 ]
-            }
+            },
+            {
+                id: "services",
+                path: '/services',
+                children: [
+                    {
+                        index: true,
+                        element: <ServicesListView />,
+                        handle: {
+                            pageTitle: () => <PageTitle pageName="Services" />
+                        }
+                    }
+                ]
+            },
+            {
+                id: "profile",
+                path: '/profile',
+                element: <ProfileView />
+            },
         ]
     }
 

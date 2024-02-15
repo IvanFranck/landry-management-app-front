@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom"
 import { PagetitleLayout } from "./page-title-layout"
+import MobileNavLayout from "./mobile-nav-layout"
 
 export default function PageLayout() {
     return (
@@ -8,6 +9,7 @@ export default function PageLayout() {
             <div className="w-full">
                 <Outlet />
             </div>
+            <MobileNavLayout />
         </div>
     )
 }
