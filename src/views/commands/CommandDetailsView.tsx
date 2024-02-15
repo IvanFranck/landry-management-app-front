@@ -1,4 +1,4 @@
-import ServiceOnCommandListItem, { ServiceOnCommandListItemProps } from "@/components/app/ServiceOnCommandListItem"
+import ServiceOnCommandListItem, { ServiceOnCommandListItemProps } from "@/components/app/commands/ServiceOnCommandListItem"
 
 export const CommandDetailView = () => {
     const services: ServiceOnCommandListItemProps[] = [
@@ -29,7 +29,7 @@ export const CommandDetailView = () => {
 
             <div className="w-full flex flex-col space-y-2 px-2">
                 {services.map(({ price, quantity, serviceName }) => (
-                    <ServiceOnCommandListItem price={price} quantity={quantity} serviceName={serviceName} />
+                    <ServiceOnCommandListItem key={serviceName} price={price} quantity={quantity} serviceName={serviceName} />
                 ))}
             </div>
         </div>
