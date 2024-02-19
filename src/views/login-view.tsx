@@ -6,11 +6,12 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { LoginFormSchema, loginQuery } from "@/lib/api/login"
 import { useMutation } from "@tanstack/react-query"
-import { AxiosError } from "axios"
+import { AxiosError, AxiosResponse } from "axios"
 import { useToast } from "@/components/ui/use-toast"
-import { GenericAxiosResponse } from "@/lib/plugins/axios/interface"
 import { Loader } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { TGenericAxiosError, TGenericResponse, TLoginResponseDetails } from "@/lib/types/responses"
+import { AXIOS_ACCESS_TOKEN, AXIOS_REFRESH_TOKEN, STORED_USER_DATA } from "@/common/constants/local-storage-keys"
 
 
 export default function LoginView() {
@@ -27,7 +28,7 @@ export default function LoginView() {
     const { mutateAsync, isPending } = useMutation({
         mutationKey: queryKey,
         mutationFn: async (data: z.infer<typeof LoginFormSchema>) => await loginQuery(data),
-        onError: (error: AxiosError<GenericAxiosResponse>) => {
+        onError: (error: AxiosError<TGenericAxiosError>) => {
             const message = error.response?.data?.message || 'Une erreur est survenue'
             toast({
                 variant: 'destructive',
@@ -35,7 +36,11 @@ export default function LoginView() {
             })
 
         },
-        onSuccess: () => {
+        onSuccess: (data: AxiosResponse<TGenericResponse<TLoginResponseDetails>>) => {
+            const authDetails = data.data.details
+            localStorage.setItem(AXIOS_ACCESS_TOKEN, authDetails.accessToken)
+            localStorage.setItem(AXIOS_REFRESH_TOKEN, authDetails.refreshToken)
+            localStorage.setItem(STORED_USER_DATA, JSON.stringify(authDetails.user))
             navigate('/commands')
         }
     })
