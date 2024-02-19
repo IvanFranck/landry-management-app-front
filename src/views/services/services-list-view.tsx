@@ -1,3 +1,5 @@
+import { ServiceListItem } from "@/components/app/services/service-list-item"
+import { ServiceListItemSkeleton } from "@/components/app/services/service-list-item-skeloton"
 import { fetchAllServicesQuery } from "@/lib/api/services"
 import { useQuery } from "@tanstack/react-query"
 
@@ -10,11 +12,12 @@ export default function ServicesListView() {
         staleTime: 12000
     })
     return (
-        <>
+        <div className="px-2">
             {
-                services && services.map((service) => <div key={service.id}>{service.label}</div>)
+                services ?
+                    services.map((service) => <ServiceListItem service={service} key={service.id} />)
+                    : <ServiceListItemSkeleton />
             }
-            <div> This is the services view</div>
-        </>
+        </div>
     )
 }
