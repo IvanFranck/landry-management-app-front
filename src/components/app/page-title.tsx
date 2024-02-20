@@ -13,7 +13,7 @@ export default function PageTitle({ pageName, to }: { pageName: string, to?: str
                     <span>{pageName}</span>
                 </div>
                 :
-                <div className="w-full flex items-center p-2 text-lg font-medium">{pageName}</div>
+                <div className="w-full flex justify-center p-2 text-lg font-medium">{pageName}</div>
             }
         </>
     )

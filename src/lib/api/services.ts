@@ -11,3 +11,11 @@ export async function fetchAllServicesQuery() {
                     return resp.data.details
                 })
 }
+
+export async function deleteService(id: number): Promise<TGenericResponse<ServicesEntity>> {
+    return await axiosInstance
+                    .delete(`${API_ROUTES.SERVICES}/${id}`)
+                    .then((resp: AxiosResponse<TGenericResponse<ServicesEntity>>) => {
+                        return resp.data
+                    })
+}

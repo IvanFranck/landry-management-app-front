@@ -1,3 +1,4 @@
+import { SERVICES_QUERY_KEY } from "@/common/constants/query-keys"
 import { ServiceListItem } from "@/components/app/services/service-list-item"
 import { ServiceListItemSkeleton } from "@/components/app/services/service-list-item-skeloton"
 import { fetchAllServicesQuery } from "@/lib/api/services"
@@ -5,9 +6,8 @@ import { useQuery } from "@tanstack/react-query"
 
 export default function ServicesListView() {
 
-    const queryKey = ["services_key"]
     const { data: services } = useQuery({
-        queryKey,
+        queryKey: SERVICES_QUERY_KEY,
         queryFn: fetchAllServicesQuery,
         staleTime: 12000
     })
