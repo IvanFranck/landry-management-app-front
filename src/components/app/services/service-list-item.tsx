@@ -3,6 +3,7 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { ServicesEntity } from "@/lib/types/entities";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface ServServiceListItemProps {
     service: ServicesEntity,
@@ -10,6 +11,8 @@ interface ServServiceListItemProps {
 }
 
 export function ServiceListItem({ service, onDelete }: ServServiceListItemProps) {
+
+    const navigate = useNavigate()
 
     return (
 
@@ -35,7 +38,7 @@ export function ServiceListItem({ service, onDelete }: ServServiceListItemProps)
                                 {/* <ConfirmActionDialog TriggerNode={TriggerServiceDeletionButton()} /> */}
                             </DropdownMenuItem>
                             <DropdownMenuItem className="flex flex-row items-center space-x-2">
-                                <Button variant='ghost' className="space-x-2">
+                                <Button onClick={() => navigate(`/services/edit/${service.id}`)} variant='ghost' className="space-x-2">
                                     <SquarePen size={14} /><span>Modifier</span>
                                 </Button>
                             </DropdownMenuItem>

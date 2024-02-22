@@ -8,6 +8,7 @@ import PageTitle from "@/components/app/page-title"
 import { HomeView } from "@/views/home-view"
 import ServicesListView from "@/views/services/services-list-view"
 import { ProfileView } from "@/views/profile-view"
+import ServiceEditView from "@/views/services/service-edit-view"
 
 
 export const routes: RouteObject[] = [
@@ -63,6 +64,16 @@ export const routes: RouteObject[] = [
                         element: <ServicesListView />,
                         handle: {
                             pageTitle: () => <PageTitle pageName="Services" />
+                        }
+                    },
+                    {
+                        id: 'service view',
+                        path: 'edit/:serviceId',
+                        element: <ServiceEditView />,
+                        handle: {
+                            pageTitle: (params: Params) => {
+                                return <PageTitle pageName={`Service ${params.serviceId}`} to='/services' />
+                            }
                         }
                     }
                 ]

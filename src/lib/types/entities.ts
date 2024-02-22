@@ -15,6 +15,6 @@ export type ServicesEntity = {
     updatedAt: Date
     label: string
     price: number
-    description: string | null
+    description: string | undefined
     userId: number
 }
