@@ -19,6 +19,14 @@ export async function fetchAllServicesQuery() {
                 })
 }
 
+export async function createService(data: z.infer<typeof ServiceFormSchema>){
+    return await axiosInstance
+                    .post(`${API_ROUTES.SERVICES}`, data)
+                    .then((resp: AxiosResponse<TGenericResponse<ServicesEntity>>) => {
+                        return resp.data
+                    })
+}
+
 export async function deleteService(id: number): Promise<TGenericResponse<ServicesEntity>> {
     return await axiosInstance
                     .delete(`${API_ROUTES.SERVICES}/${id}`)

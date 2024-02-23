@@ -13,14 +13,13 @@ import { AxiosError } from "axios"
 import { Loader } from "lucide-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import z from "zod"
 
 export default function ServiceEditView() {
     const { serviceId } = useParams()
     const queryClient = useQueryClient()
     const { toast } = useToast()
-    const navigate = useNavigate()
 
 
 
@@ -78,7 +77,6 @@ export default function ServiceEditView() {
         await mutateAsync(values)
     }
 
-    console.log('erreur', form.formState.errors)
 
     return (
         <div className="w-full px-2">
