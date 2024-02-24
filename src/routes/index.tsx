@@ -9,6 +9,7 @@ import { HomeView } from "@/views/home-view"
 import ServicesListView from "@/views/services/services-list-view"
 import { ProfileView } from "@/views/profile-view"
 import ServiceEditView from "@/views/services/service-edit-view"
+import ServiceCreationDrawer from "@/components/app/services/service-creation-drawer"
 
 
 export const routes: RouteObject[] = [
@@ -49,7 +50,7 @@ export const routes: RouteObject[] = [
                         element: <CommandDetailView />,
                         handle: {
                             pageTitle: (params: Params) => {
-                                return <PageTitle pageName={`Commande ${params.commandId}`} to='/commands' />
+                                return <PageTitle pageName={`Commande ${params.commandId}`} backlink='/commands' />
                             }
                         }
                     }
@@ -63,7 +64,7 @@ export const routes: RouteObject[] = [
                         index: true,
                         element: <ServicesListView />,
                         handle: {
-                            pageTitle: () => <PageTitle pageName="Services" />
+                            pageTitle: () => <PageTitle pageName="Services" creationDrawer={<ServiceCreationDrawer />} />
                         }
                     },
                     {
@@ -72,7 +73,7 @@ export const routes: RouteObject[] = [
                         element: <ServiceEditView />,
                         handle: {
                             pageTitle: (params: Params) => {
-                                return <PageTitle pageName={`Service ${params.serviceId}`} to='/services' />
+                                return <PageTitle pageName={`Service ${params.serviceId}`} backlink='/services' />
                             }
                         }
                     }
