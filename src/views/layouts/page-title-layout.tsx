@@ -1,16 +1,19 @@
 import { useMatches } from "react-router-dom";
 
 export function PagetitleLayout() {
-    const matches = useMatches()
-        .filter((match) => Boolean(match.handle?.pageTitle))
-        .map((match) => match.handle.pageTitle(match.params))
+    const titles = useMatches()
+        .reduce((acc, match) => {
+            if (match.handle?.pageTitle) {
+                acc.push(match.handle.pageTitle(match.params));
+            }
+            return acc;
+        }, []);
+
     return (
-        <>
-            {matches.map((match, index) => (
-                <div className="w-full" key={index}>
-                    {match}
-                </div>
+        <div className="w-full px-2 py-3">
+            {titles.map((title, index) => (
+                <div key={index}>{title}</div>
             ))}
-        </>
-    )
+        </div>
+    );
 }
