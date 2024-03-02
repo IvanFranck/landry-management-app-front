@@ -26,6 +26,7 @@
     "clsx": "^2.1.0",
     "framer-motion": "^11.0.3",
     "hamburger-react": "^2.5.0",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.323.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.20.1",
+    "@types/lodash": "^4.14.202",
     "@types/node": "^20.11.16",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
