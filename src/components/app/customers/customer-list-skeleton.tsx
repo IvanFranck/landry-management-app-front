@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function CustomerListItemSkeleton() {
+export default function CustomerListSkeleton() {
     return (
         <div className="mt-4 space-y-5">
             {

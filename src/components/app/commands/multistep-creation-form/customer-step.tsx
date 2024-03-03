@@ -1,21 +1,22 @@
 import { CUSTOMERS_QUERY_KEY } from "@/common/constants/query-keys";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { fetchAllCustomersQuery, searchCustomerByName } from "@/lib/api/customers";
 import { useQuery } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
-import CustomerListItemSkeleton from "../../customers/customer-list-item-skeleton";
+import CustomerListSkeleton from "../../customers/customer-list-skeleton";
 import CustomerListItem from "../../customers/customer-list-item";
 import { useCallback, useMemo, useState } from "react";
 import { debounce } from "lodash"
 import { CustomersEntity } from "@/lib/types/entities";
 import { NoDataIllustration } from "@/components/illustrations/no-data-illustration";
+import CustomerCreationDrawer from "../../customers/customer-creation-drawer";
 
-// const debouncedSearchCustomers = debounce((searchCustomer: string) => searchCustomerByName(searchCustomer), 1000)
+type CusrtomerStepProps = {
+    selectedCustomer: CustomersEntity | undefined
+    setSelectedCustomer: React.Dispatch<React.SetStateAction<CustomersEntity | undefined>>
+}
 
-export function CustomerStep() {
+export function CustomerStep({ selectedCustomer, setSelectedCustomer }: CusrtomerStepProps) {
 
-    const [selectedCustomer, setSelectedCustomer] = useState<CustomersEntity | undefined>();
     const [findedCustomers, setFindedCustomers] = useState<CustomersEntity[] | undefined>();
     const [searchloading, setSearchLoading] = useState(false)
 
@@ -26,14 +27,14 @@ export function CustomerStep() {
     })
 
 
-    const handleSearch = useCallback(async (seachText: string) => {
-        if (!seachText) {
+    const handleSearch = useCallback(async (searchText: string) => {
+        if (!searchText) {
             setFindedCustomers(undefined)
             setSearchLoading(false)
             return
         }
         try {
-            const result = await searchCustomerByName(seachText.trim())
+            const result = await searchCustomerByName(searchText.trim())
             setFindedCustomers(result.details)
         } catch (error) {
             console.error('catched error', error)
@@ -67,10 +68,7 @@ export function CustomerStep() {
                         {/* search and new */}
                         <div className="w-full flex items-center space-x-2 mt-4">
                             <Input onChange={handleChange} className="bg-white" type="search" placeholder="Rechercher un client par son nom" />
-                            <Button className="flex items-center space-x-1" type="submit">
-                                <span>Nouveau</span>
-                                <Plus size={16} strokeWidth={3} />
-                            </Button>
+                            <CustomerCreationDrawer onCustomerCreated={setSelectedCustomer} />
                         </div>
 
                         {/* customers list */}
@@ -79,12 +77,12 @@ export function CustomerStep() {
                             {/* customers list */}
                             {
                                 searchloading ?
-                                    <CustomerListItemSkeleton />
+                                    <CustomerListSkeleton />
                                     : findedCustomers ? findedCustomers.length === 0 ? <NoDataIllustration text="Aucun client correspondant" /> :
                                         findedCustomers.map((customer) => <CustomerListItem onClick={() => setSelectedCustomer(customer)} key={customer.id} customer={customer} className=" border-x-0 border-t-0 border-b-slate-300" />)
                                         : customers ?
                                             customers.details.map((customer) => <CustomerListItem onClick={() => setSelectedCustomer(customer)} key={customer.id} customer={customer} className=" border-x-0 border-t-0 border-b-slate-300" />)
-                                            : <CustomerListItemSkeleton />
+                                            : <CustomerListSkeleton />
                             }
                         </div>
                     </>

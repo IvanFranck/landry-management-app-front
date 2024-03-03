@@ -1,15 +1,23 @@
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Plus, X } from "lucide-react";
-import { useState } from "react";
+import { Plus, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import { CustomerStep } from "./multistep-creation-form/customer-step";
 import { ServiceStep } from "./multistep-creation-form/service-step";
+import { CustomersEntity } from "@/lib/types/entities";
 
 export function CommandCreationDrawer() {
 
     const [isOpen, setOpen] = useState(false)
     const [currentStep, setCurrentStep] = useState(1)
+    const [selectedCustomer, setSelectedCustomer] = useState<CustomersEntity | undefined>()
 
+    useEffect(() => {
+        if (selectedCustomer) {
+            setCurrentStep(2)
+        } else
+            setCurrentStep(1)
+    }, [selectedCustomer])
     return (
         <div>
             <Button variant='ghost' className="p-0">
@@ -36,17 +44,17 @@ export function CommandCreationDrawer() {
                                 </div>
                                 <div className="w-full grow flex flex-col justify-between">
                                     <div className="w-full grow text-black">
-                                        {currentStep === 1 && <CustomerStep />}
-                                        {currentStep === 2 && <ServiceStep />}
+                                        {currentStep >= 1 && <CustomerStep selectedCustomer={selectedCustomer} setSelectedCustomer={setSelectedCustomer} />}
+                                        {currentStep >= 2 && <ServiceStep />}
                                     </div>
-                                    <div className="grow-0 w-full flex flex-row justify-between">
+                                    {/* <div className="grow-0 w-full flex flex-row justify-between">
                                         <Button disabled={currentStep <= 1} onClick={() => setCurrentStep(currentStep - 1)} variant="secondary" className="rounded-none bg-red-500 rounded-tr-2xl px-3 py-6">
                                             <ChevronLeft size={28} strokeWidth={2} className="text-white" />
                                         </Button>
                                         <Button onClick={() => setCurrentStep(currentStep + 1)} variant="secondary" className="rounded-none bg-red-500 rounded-tl-2xl px-3 py-6">
                                             <ChevronRight size={28} strokeWidth={2} className="text-white" />
                                         </Button>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </motion.div>
