@@ -57,8 +57,12 @@ export default function CustomerCreationDrawer({ onCustomerCreated }: CustomerCr
         const newCustomer = await createCustomer(data)
         onCustomerCreated(newCustomer.details)
     }
+
+    const handleClose = () => {
+        form.reset()
+    }
     return (
-        <Drawer>
+        <Drawer onClose={handleClose}>
             <DrawerTrigger asChild>
                 <Button className="flex items-center space-x-1" type="submit">
                     <span>Nouveau</span>
