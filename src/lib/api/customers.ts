@@ -13,5 +13,5 @@ export async function fetchAllCustomersQuery() {
 export async function searchCustomerByName(text: string) {
     return await axiosInstance
                     .get(`${API_ROUTES.CUSTOMERS}/search?name=${text}`)
-                    .then((resp: AxiosResponse<TGenericResponse<CustomersEntity>>) => resp.data)
+                    .then((resp: AxiosResponse<TGenericResponse<CustomersEntity[]>>) => resp.data)
 }
