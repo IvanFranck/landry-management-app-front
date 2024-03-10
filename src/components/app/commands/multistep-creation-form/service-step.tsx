@@ -1,18 +1,18 @@
-import { motion, AnimatePresence } from "framer-motion"
+import ServiceCreationDrawer from "../../services/service-creation-drawer";
+import ServiceFindDrawer from "../../services/service-find-drawer";
+
+
 export function ServiceStep() {
     return (
-        <AnimatePresence>
-            <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-
-                transition={{ duration: 0.3 }}
-                className="w-full h-full bg-slate-400"
-            >
-                <h1>Service step</h1>
-
-            </motion.div>
-        </AnimatePresence>
+        <div className="w-full px-4 mt-4 flex flex-col">
+            <h3 className="text-lg font-medium">Services</h3>
+            <>
+                {/* search and new */}
+                <div className="w-full flex items-center space-x-2 mt-4">
+                    <ServiceFindDrawer />
+                    <ServiceCreationDrawer />
+                </div>
+            </>
+        </div>
     )
 }

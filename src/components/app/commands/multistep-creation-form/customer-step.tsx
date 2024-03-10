@@ -55,7 +55,7 @@ export function CustomerStep({ selectedCustomer, setSelectedCustomer }: Cusrtome
     return (
 
         <div className="w-full px-4 mt-4 flex flex-col">
-            <h1 className="text-lg font-medium">Client</h1>
+            <h3 className="text-lg font-medium">Client</h3>
 
             {
                 selectedCustomer ? (

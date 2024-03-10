@@ -18,6 +18,11 @@ export type ServicesEntity = BaseEntity & {
     userId: number
 }
 
+export type ServiceOnCommandEntity = {
+    service: ServicesEntity,
+    quantity: number
+}
+
 export type CustomersEntity = BaseEntity & {
     name: string
     phone: number,

@@ -44,8 +44,8 @@ export function CommandCreationDrawer() {
                                 </div>
                                 <div className="w-full grow flex flex-col justify-between">
                                     <div className="w-full grow text-black">
-                                        {currentStep >= 1 && <CustomerStep selectedCustomer={selectedCustomer} setSelectedCustomer={setSelectedCustomer} />}
-                                        {currentStep >= 2 && <ServiceStep />}
+                                        {currentStep >= 2 && <CustomerStep selectedCustomer={selectedCustomer} setSelectedCustomer={setSelectedCustomer} />}
+                                        {currentStep >= 1 && <ServiceStep />}
                                     </div>
                                     {/* <div className="grow-0 w-full flex flex-row justify-between">
                                         <Button disabled={currentStep <= 1} onClick={() => setCurrentStep(currentStep - 1)} variant="secondary" className="rounded-none bg-red-500 rounded-tr-2xl px-3 py-6">

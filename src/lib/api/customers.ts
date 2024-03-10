@@ -8,7 +8,7 @@ import z from "zod";
 export const CustomerFormSchema = z.object({
     name: z.string().trim().min(1, 'invalid name'),
     phone: z.string().min(9).max(9, 'invalid phone number').transform((phone: string):number => +phone),
-    address: z.string().trim().min(1, 'invalid address')
+    address: z.string().trim().optional()
 })
 
 export async function fetchAllCustomersQuery() {
