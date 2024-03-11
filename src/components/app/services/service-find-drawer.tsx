@@ -5,7 +5,7 @@ import { fetchAllServicesQuery, searchServiceByName } from "@/lib/api/services";
 import { ServiceOnCommandEntity, ServicesEntity } from "@/lib/types/entities";
 import { useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
-import { ChangeEvent, ReactNode, useCallback, useMemo, useRef, useState } from "react";
+import { ChangeEvent, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { NoDataIllustration } from "@/components/illustrations/no-data-illustration";
 import { ServiceListItem } from "./service-list-item";
 import { Badge } from "@/components/ui/badge";
@@ -46,6 +46,16 @@ export default function ServiceFindDrawer({ selectedServices, setSelectedService
     }, [])
 
     const handleSelectService = (quantity: number, service: ServicesEntity) => {
+        if (selectedServices.find((item) => item.service.id === service.id)) {
+            const tabs = selectedServices.map((item) => {
+                if (item.service.id === service.id) {
+                    return { ...item, quantity }
+                }
+                return item
+            })
+            setSelectedServices(tabs)
+            return
+        }
         setSelectedServices([...selectedServices, { service, quantity }])
     }
 
@@ -99,10 +109,17 @@ export default function ServiceFindDrawer({ selectedServices, setSelectedService
                                             <h5 className="text-sm font-semibold text-gray-500">Services choisis</h5>
                                             <div className="w-full flex flex-row flex-wrap">
                                                 {selectedServices.map(({ service, quantity }, index) => (
-                                                    <Badge key={service.id} variant='secondary' className="flex justify-center items-center space-x-2 mb-2 mr-2 ">
-                                                        <span>{service.label} ({quantity})</span>
-                                                        <X onClick={() => unselectService(index)} strokeWidth={4} size={12} className="text-gray-500 cursor-pointer" />
-                                                    </Badge>
+                                                    <ServiceOnCommandDrawer
+                                                        key={service.id}
+                                                        service={service}
+                                                        onQuantityChange={handleSelectService}
+                                                        qty={quantity}
+                                                    >
+                                                        <Badge variant='secondary' className="flex justify-center items-center space-x-2 mb-2 mr-2 ">
+                                                            <span>{service.label} ({quantity})</span>
+                                                            <X onClick={() => unselectService(index)} strokeWidth={4} size={12} className="text-gray-500 cursor-pointer" />
+                                                        </Badge>
+                                                    </ServiceOnCommandDrawer>
                                                 ))}
                                             </div>
                                         </div>
@@ -116,7 +133,13 @@ export default function ServiceFindDrawer({ selectedServices, setSelectedService
                                             : findedServices ? findedServices.length === 0 ? <NoDataIllustration text="Aucun service trouvé" /> :
                                                 findedServices.map((service) => {
                                                     return (
-                                                        <ServiceOnCommandDrawer disbaled={Boolean(selectedServices.find((selectedService) => selectedService.service.id === service.id))} key={service.id} service={service} onQuantityChange={handleSelectService}>
+                                                        <ServiceOnCommandDrawer
+                                                            key={service.id}
+                                                            disbaled={Boolean(selectedServices.find((selectedService) => selectedService.service.id === service.id))}
+                                                            service={service}
+                                                            onQuantityChange={handleSelectService}
+                                                            className="w-full"
+                                                        >
                                                             <ServiceListItem className="border-x-0 border-t-0 border-b-slate-300 cursor-pointer" service={service} simple />
                                                         </ServiceOnCommandDrawer>
                                                     )
@@ -124,7 +147,13 @@ export default function ServiceFindDrawer({ selectedServices, setSelectedService
                                                 : services ?
                                                     services.map((service) => {
                                                         return (
-                                                            <ServiceOnCommandDrawer disbaled={Boolean(selectedServices.find((selectedService) => selectedService.service.id === service.id))} key={service.id} service={service} onQuantityChange={handleSelectService}>
+                                                            <ServiceOnCommandDrawer
+                                                                key={service.id}
+                                                                disbaled={Boolean(selectedServices.find((selectedService) => selectedService.service.id === service.id))}
+                                                                service={service}
+                                                                onQuantityChange={handleSelectService}
+                                                                className="w-full"
+                                                            >
                                                                 <ServiceListItem className="border-x-0 border-t-0 border-b-slate-300 cursor-pointer" service={service} simple />
                                                             </ServiceOnCommandDrawer>
                                                         )
@@ -146,19 +175,28 @@ type ServiceOnCommandDrawerProps = {
     children: ReactNode
     onQuantityChange: (quantity: number, service: ServicesEntity) => void
     disbaled?: boolean
+    qty?: number
 }
 
-const ServiceOnCommandDrawer = ({ service, children, onQuantityChange, disbaled = false }: ServiceOnCommandDrawerProps) => {
-    const [quantity, setQuantity] = useState(0)
+const ServiceOnCommandDrawer = ({ service, children, onQuantityChange, disbaled = false, qty = 0, ...props }: ServiceOnCommandDrawerProps & React.HTMLProps<HTMLDivElement>) => {
+    const [quantity, setQuantity] = useState<number>(qty)
     const drawerCloserBtn = useRef(null)
+
+    useEffect(() => {
+        setQuantity(qty)
+    }, [qty])
 
     const handleClick = () => {
         onQuantityChange(quantity, service)
         drawerCloserBtn.current.click()
     }
+
+    const handleClose = () => {
+        if (!qty) setQuantity(0)
+    }
     return (
-        <Drawer onOpenChange={() => setQuantity(0)} >
-            <DrawerTrigger disabled={disbaled} className={`w-full text-start ${disbaled ? 'opacity-50 cursor-not-allowed' : ''}`}>
+        <Drawer onClose={handleClose}>
+            <DrawerTrigger disabled={disbaled} className={`${props.className} text-start ${disbaled ? 'opacity-50 cursor-not-allowed' : ''}`}>
                 {children}
             </DrawerTrigger>
 
