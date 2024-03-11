@@ -13,6 +13,7 @@ export function CommandCreationDrawer() {
     const [selectedCustomer, setSelectedCustomer] = useState<CustomersEntity | undefined>()
     const [selectedServices, setSelectedServices] = useState<ServiceOnCommandEntity[] | []>([])
     const [billingPrice, setBillingPrice] = useState(0)
+    const [discount, setDiscount] = useState(0)
 
     useEffect(() => {
         const total = selectedServices.reduce((prev, curr) => prev + curr.service.price * curr.quantity, 0)
@@ -47,12 +48,30 @@ export function CommandCreationDrawer() {
                                 </div>
                                 <div className="grow-0 w-full flex flex-col space-y-1 bg-green-600 px-4 py-2">
                                     <span className="text-gray-200">Total</span>
-                                    <h3 className="text-3xl font-bold">{billingPrice} Fcfa</h3>
+                                    <h3 className="text-3xl font-bold">
+                                        {
+                                            discount > 0
+                                                ? <p className="flex items-center">
+                                                    <span className="text-lg line-through text-gray-300 font-normal mr-2">{billingPrice} Fcfa</span>
+                                                    <span>{billingPrice - discount}Fcfa</span>
+                                                </p>
+                                                : `${billingPrice} Fcfa`
+                                        }
+                                    </h3>
                                 </div>
                                 <div className="w-full grow flex flex-col justify-between">
                                     <div className="w-full grow text-black">
                                         {currentStep >= 2 && <CustomerStep selectedCustomer={selectedCustomer} setSelectedCustomer={setSelectedCustomer} />}
-                                        {currentStep >= 1 && <ServiceStep selectedServices={selectedServices} setSelectedServices={setSelectedServices} />}
+                                        {
+                                            currentStep >= 1 &&
+                                            <ServiceStep
+                                                selectedServices={selectedServices}
+                                                setSelectedServices={setSelectedServices}
+                                                discount={discount}
+                                                setDiscount={setDiscount}
+                                                billingPrice={billingPrice}
+                                            />
+                                        }
                                     </div>
                                     {/* <div className="grow-0 w-full flex flex-row justify-between">
                                         <Button disabled={currentStep <= 1} onClick={() => setCurrentStep(currentStep - 1)} variant="secondary" className="rounded-none bg-red-500 rounded-tr-2xl px-3 py-6">
