@@ -5,28 +5,29 @@ import { fetchAllServicesQuery, searchServiceByName } from "@/lib/api/services";
 import { ServiceOnCommandEntity, ServicesEntity } from "@/lib/types/entities";
 import { useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
-import { ChangeEvent, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ChangeEvent, ReactNode, useCallback, useMemo, useRef, useState } from "react";
 import { NoDataIllustration } from "@/components/illustrations/no-data-illustration";
 import { ServiceListItem } from "./service-list-item";
 import { Badge } from "@/components/ui/badge";
-import { Minus, Plus, X } from "lucide-react";
+import { Minus, Plus, SquarePen, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion"
 import SearchSkeleton from "../search-skeleton";
 import { DrawerContent, Drawer, DrawerTrigger, DrawerPortal, DrawerOverlay, DrawerTitle, DrawerFooter, DrawerClose } from "@/components/ui/drawer";
 
-export default function ServiceFindDrawer() {
+type ServiceFindDrawerProps = {
+    selectedServices: ServiceOnCommandEntity[] | []
+    setSelectedServices: React.Dispatch<React.SetStateAction<ServiceOnCommandEntity[] | []>>
+}
+export default function ServiceFindDrawer({ selectedServices, setSelectedServices }: ServiceFindDrawerProps) {
     const [searchloading, setSearchLoading] = useState(false)
     const [findedServices, setFindedServices] = useState<ServicesEntity[] | undefined>();
     const [isOpen, setOpen] = useState(false)
-    const [selectedServices, setSelectedServices] = useState<ServiceOnCommandEntity[] | []>([])
 
     const { data: services } = useQuery({
         queryKey: SERVICES_QUERY_KEY,
         queryFn: fetchAllServicesQuery,
         staleTime: 12000
     })
-
-
 
     const handleSearch = useCallback(async (searchText: string) => {
         if (!searchText) {
@@ -63,9 +64,14 @@ export default function ServiceFindDrawer() {
 
 
     return (
-        <div>
-            <div className="">
-                <Input onClick={() => setOpen(true)} className="bg-inherit" type="search" placeholder="Rechercher un service" />
+        <div className={`${selectedServices.length > 0 ? 'grow-0' : 'grow'}`}>
+            <div className="w-full">
+                {
+                    selectedServices.length > 0
+                        ? <SquarePen size={24} onClick={() => setOpen(true)} className="text-blue-600 cursor-pointer" />
+                        : <Input onClick={() => setOpen(true)} className="bg-inherit" type="search" placeholder="Rechercher un service" />
+
+                }
             </div>
             <AnimatePresence>
                 {
@@ -93,9 +99,9 @@ export default function ServiceFindDrawer() {
                                             <h5 className="text-sm font-semibold text-gray-500">Services choisis</h5>
                                             <div className="w-full flex flex-row flex-wrap">
                                                 {selectedServices.map(({ service, quantity }, index) => (
-                                                    <Badge key={service.id} onClick={() => unselectService(index)} variant='secondary' className="flex justify-center items-center space-x-2 mb-2 mr-2 cursor-pointer">
+                                                    <Badge key={service.id} variant='secondary' className="flex justify-center items-center space-x-2 mb-2 mr-2 ">
                                                         <span>{service.label} ({quantity})</span>
-                                                        <X strokeWidth={4} size={12} className="text-gray-500" />
+                                                        <X onClick={() => unselectService(index)} strokeWidth={4} size={12} className="text-gray-500 cursor-pointer" />
                                                     </Badge>
                                                 ))}
                                             </div>
