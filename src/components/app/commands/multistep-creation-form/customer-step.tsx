@@ -2,13 +2,13 @@ import { CUSTOMERS_QUERY_KEY } from "@/common/constants/query-keys";
 import { Input } from "@/components/ui/input";
 import { fetchAllCustomersQuery, searchCustomerByName } from "@/lib/api/customers";
 import { useQuery } from "@tanstack/react-query";
-import CustomerListSkeleton from "../../customers/customer-list-skeleton";
 import CustomerListItem from "../../customers/customer-list-item";
 import { useCallback, useMemo, useState } from "react";
 import { debounce } from "lodash"
 import { CustomersEntity } from "@/lib/types/entities";
 import { NoDataIllustration } from "@/components/illustrations/no-data-illustration";
 import CustomerCreationDrawer from "../../customers/customer-creation-drawer";
+import SearchSkeleton from "../../search-skeleton";
 
 type CusrtomerStepProps = {
     selectedCustomer: CustomersEntity | undefined
@@ -54,7 +54,7 @@ export function CustomerStep({ selectedCustomer, setSelectedCustomer }: Cusrtome
 
     return (
 
-        <div className="w-full px-4 mt-4 flex flex-col">
+        <div className="w-full mt-4 flex flex-col">
             <h3 className="text-lg font-medium">Client</h3>
 
             {
@@ -77,12 +77,12 @@ export function CustomerStep({ selectedCustomer, setSelectedCustomer }: Cusrtome
                             {/* customers list */}
                             {
                                 searchloading ?
-                                    <CustomerListSkeleton />
+                                    <SearchSkeleton length={3} />
                                     : findedCustomers ? findedCustomers.length === 0 ? <NoDataIllustration text="Aucun client correspondant" /> :
                                         findedCustomers.map((customer) => <CustomerListItem onClick={() => setSelectedCustomer(customer)} key={customer.id} customer={customer} className=" border-x-0 border-t-0 border-b-slate-300" />)
                                         : customers ?
                                             customers.details.map((customer) => <CustomerListItem onClick={() => setSelectedCustomer(customer)} key={customer.id} customer={customer} className=" border-x-0 border-t-0 border-b-slate-300" />)
-                                            : <CustomerListSkeleton />
+                                            : <SearchSkeleton length={3} />
                             }
                         </div>
                     </>

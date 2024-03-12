@@ -21,7 +21,7 @@ export default function PageTitle({ pageName, backlink, creationDrawer }: PageTi
                 </div>
                 :
                 <div className="w-full flex flex-row items-center px-2">
-                    <span className="text-lg font-medium grow text-center">{pageName}</span>
+                    <h2 className="text-lg font-medium grow text-center">{pageName}</h2>
                     {creationDrawer}
                 </div>
             }
