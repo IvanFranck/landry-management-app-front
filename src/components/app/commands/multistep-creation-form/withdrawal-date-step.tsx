@@ -10,6 +10,10 @@ type WithdrawalDateStepProps = {
 
 export default function WithdrawalDateStep({ date, setDate }: WithdrawalDateStepProps) {
 
+    // const test = (day: Date | undefined) => {
+    //     setDate(day)
+    // }
+
     return (
         <section className=" space-y-2">
             <h3 className="text-lg font-medium">Date de retrait</h3>

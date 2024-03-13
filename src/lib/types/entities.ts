@@ -28,3 +28,20 @@ export type CustomersEntity = BaseEntity & {
     phone: number,
     address: string
 }
+
+export type CommandsEntity = BaseEntity & {
+    price: number
+    description: string | undefined
+    discount: number | null
+    customerId: number
+    userId: number
+    withdrawDate: Date
+    customer: CustomersEntity
+    code: CommandCodeEntity
+    services: ServiceOnCommandEntity[]
+}
+
+export type CommandCodeEntity = Omit<BaseEntity, 'updatedAt'> & {
+    code: string,
+    commandId: number
+}

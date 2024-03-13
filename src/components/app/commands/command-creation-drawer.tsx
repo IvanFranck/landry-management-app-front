@@ -1,13 +1,20 @@
 import { Button } from "@/components/ui/button";
-import { Plus, X } from "lucide-react";
+import { Loader, Plus, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion"
 import { CustomerStep } from "./multistep-creation-form/customer-step";
 import { ServiceStep } from "./multistep-creation-form/service-step";
-import { CustomersEntity, ServiceOnCommandEntity } from "@/lib/types/entities";
+import { CommandsEntity, CustomersEntity, ServiceOnCommandEntity } from "@/lib/types/entities";
 import DiscountStep from "./multistep-creation-form/discount-step";
 import WithdrawalDateStep from "./multistep-creation-form/withdrawal-date-step";
 import DescriptionStep from "./multistep-creation-form/description-step";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { z } from "zod";
+import { CommandSchema, createCommandQuery } from "@/lib/api/commands";
+import { AxiosError } from "axios";
+import { TGenericAxiosError, TGenericResponse } from "@/lib/types/responses";
+import { useToast } from "@/components/ui/use-toast";
+import { COMMANDS_QUERY_KEY } from "@/common/constants/query-keys";
 
 export function CommandCreationDrawer() {
 
@@ -19,15 +26,66 @@ export function CommandCreationDrawer() {
     const [date, setDate] = useState<Date | undefined>(undefined)
     const [description, setDescription] = useState("")
 
+    const queryClient = useQueryClient()
+    const { toast } = useToast()
+
     useEffect(() => {
         if (selectedServices.length === 0) setDiscount(0)
         const total = selectedServices.reduce((prev, curr) => prev + curr.service.price * curr.quantity, 0)
         setBillingPrice(total)
     }, [selectedServices])
+
+    const { mutateAsync, isPending } = useMutation({
+        mutationFn: async (data: z.infer<typeof CommandSchema>) => await createCommandQuery(data),
+        onError: (error: AxiosError<TGenericAxiosError>) => {
+            const message = error.response?.data?.message || 'Une erreur est survene lors de ma crétaion de la commande'
+            toast({
+                variant: 'destructive',
+                description: message,
+                duration: 7000
+            })
+        },
+        onSuccess: (data: TGenericResponse<CommandsEntity>) => {
+            queryClient.invalidateQueries({ queryKey: COMMANDS_QUERY_KEY })
+            toast({
+                variant: 'success',
+                description: data.message,
+                duration: 3000
+            })
+            cancel()
+        }
+    })
+
+    const reset = () => {
+        setSelectedServices([])
+        setDiscount(0)
+        setSelectedCustomer(undefined)
+        setDate(undefined)
+        setDescription('')
+    }
+
+    const cancel = () => {
+        setOpen(!isOpen)
+        reset()
+    }
+
+    const save = async () => {
+        const data: z.infer<typeof CommandSchema> = {
+            description,
+            discount,
+            customerId: selectedCustomer?.id || 0,
+            withdrawDate: date || new Date(),
+            services: selectedServices as ServiceOnCommandEntity[]
+        }
+        console.log("🚀 ~ save ~ data:", data)
+
+        await mutateAsync(data)
+    }
+
     return (
         <>
             <Button variant='ghost' className="p-0">
-                <Plus className="grow-0 text-blue-600" size={24} onClick={() => setOpen(!isOpen)} />
+                <Plus className="grow-0 text-blue-600" size={24} onClick={cancel} />
             </Button>
 
             <AnimatePresence>
@@ -72,8 +130,21 @@ export function CommandCreationDrawer() {
                                         }
                                         {selectedServices.length > 0 && <CustomerStep selectedCustomer={selectedCustomer} setSelectedCustomer={setSelectedCustomer} />}
                                         {selectedCustomer && <WithdrawalDateStep date={date} setDate={setDate} />}
-                                        {date && <DescriptionStep description={description} setDescription={setDescription} />}
-                                        <div className="h-6"></div>
+                                        {selectedCustomer && <DescriptionStep description={description} setDescription={setDescription} />}
+                                        {
+
+                                            date && <div className="w-full flex flex-col">
+                                                <Button
+                                                    disabled={isPending}
+                                                    className="bg-green-600 py-6 space-x-2 mb-8"
+                                                    onClick={save}
+                                                >
+                                                    <span className="text-lg">Valider - </span>
+                                                    <span className="font-bold text-2xl">{billingPrice - discount} fcfa</span>
+                                                    {isPending && <Loader size={18} className="animate-spin" />}
+                                                </Button>
+                                            </div>
+                                        }
                                     </div>
 
                                     {/* <div className="grow-0 w-full flex flex-row justify-between">

@@ -61,7 +61,12 @@ export function CustomerStep({ selectedCustomer, setSelectedCustomer }: Cusrtome
                 selectedCustomer ? (
                     <div className="w-full mt-4 flex flex-row justify-between items-center">
                         <CustomerListItem customer={selectedCustomer} className=" border-0 px-0" selected />
-                        <h3 className="text-blue-700 cursor-pointer font-semibold mb-2" onClick={() => setSelectedCustomer(undefined)}>Changer</h3>
+                        <h3
+                            className="text-blue-700 cursor-pointer font-semibold mb-2"
+                            onClick={() => { setSelectedCustomer(undefined); setFindedCustomers(undefined) }}
+                        >
+                            Changer
+                        </h3>
                     </div>
                 ) :
                     <>
