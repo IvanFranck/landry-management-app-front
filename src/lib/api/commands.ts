@@ -30,3 +30,9 @@ export async function createCommandQuery(data: z.infer<typeof CommandSchema>){
                     .post(`${API_ROUTES.COMMANDS}`, data)
                     .then((resp: AxiosResponse<TGenericResponse<CommandsEntity>>) => resp.data)
 }
+
+export async function fetchAllCommandsQuery(){
+    return await axiosInstance
+                    .get(API_ROUTES.COMMANDS)
+                    .then((resp: AxiosResponse<TGenericResponse<CommandsEntity[]>>) => resp.data.details)
+}

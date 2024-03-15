@@ -96,7 +96,7 @@ export function CommandCreationDrawer() {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: 600 }}
                             transition={{ duration: 0.3 }}
-                            className="absolute z-10 top-0 left-0 right-0 h-auto w-full"
+                            className="absolute z-10 top-0 left-0 right-0 min-h-screen w-full"
                         >
                             <div className="min-h-svh w-full bg-white flex flex-col overflow-auto">
                                 <div className="w-full">
@@ -133,7 +133,7 @@ export function CommandCreationDrawer() {
                                         {selectedCustomer && <DescriptionStep description={description} setDescription={setDescription} />}
                                         {
 
-                                            date && <div className="w-full flex flex-col">
+                                            date && selectedCustomer && <div className="w-full flex flex-col">
                                                 <Button
                                                     disabled={isPending}
                                                     className="bg-green-600 py-6 space-x-2 mb-8"

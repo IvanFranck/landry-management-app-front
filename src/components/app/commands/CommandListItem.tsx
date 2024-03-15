@@ -1,19 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { CommandsEntity } from "@/lib/types/entities"
+import { formatDate } from "date-fns"
+import { fr } from "date-fns/locale"
 
-type CommandStatusType =
-    | "Terminé"
-    | "Annulé"
-    | "En cours"
 
 export interface CommandListItemProps {
-    commandId: string,
-    price: string,
-    customerName: string,
-    status: CommandStatusType,
-    date: string,
+    command: CommandsEntity
 }
 
-export const CommandListItem = ({ commandId, price, customerName, status, date }: CommandListItemProps) => {
+export const CommandListItem = ({ command }: CommandListItemProps) => {
 
     // const handleCLick = () => {
 
@@ -24,22 +19,13 @@ export const CommandListItem = ({ commandId, price, customerName, status, date }
         <Card>
             <CardHeader>
                 <CardTitle className="text-lg flex justify-between">
-                    <span>{commandId}</span>
-                    <span>{price} Fcfa</span>
+                    <span>{command.code.code}</span>
+                    <span>{command.price} Fcfa</span>
                 </CardTitle>
-                <CardDescription className="text-md text-gray-500">{customerName}</CardDescription>
+                <CardDescription className="text-md text-gray-500">{command.customer.name}</CardDescription>
             </CardHeader>
             <CardContent className="">
-                <span
-                    className={`
-                        ${status === 'En cours' ? "text-blue-500" : ""} 
-                        ${status === 'Annulé' ? "text-red-500" : ""}
-                        ${status === 'Terminé' ? "text-green-500" : ""}
-                    `}
-                >
-                    {status}
-                </span>
-                <p className="text-gray-400 text-xs">{date}</p>
+                <p className="text-gray-400 text-xs">À rétirer: {formatDate(command.withdrawDate, "dd MMM", { locale: fr })}</p>
             </CardContent>
         </Card>
     )

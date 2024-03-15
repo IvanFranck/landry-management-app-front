@@ -5,12 +5,12 @@ import { ScrollArea } from "@radix-ui/react-scroll-area"
 
 export default function PageLayout() {
     return (
-        <ScrollArea className="w-full min-h-screen bg-slate-200">
+        <div className="w-full min-h-screen relative bg-slate-200">
             <PagetitleLayout />
-            <div className="w-full">
+            <ScrollArea className="w-full mb-[55px] pb-2 ">
                 <Outlet />
-            </div>
+            </ScrollArea>
             <MobileNavLayout />
-        </ScrollArea>
+        </div>
     )
 }
