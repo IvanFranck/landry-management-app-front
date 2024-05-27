@@ -11,6 +11,7 @@ import { ProfileView } from "@/views/profile-view"
 import ServiceEditView from "@/views/services/service-edit-view"
 import ServiceCreationDrawer from "@/components/app/services/service-creation-drawer"
 import { CommandCreationDrawer } from "@/components/app/commands/command-creation-drawer"
+import { PenLine } from "lucide-react"
 
 
 export const routes: RouteObject[] = [
@@ -51,7 +52,7 @@ export const routes: RouteObject[] = [
                         element: <CommandDetailView />,
                         handle: {
                             pageTitle: (params: Params) => {
-                                return <PageTitle pageName={`Commande ${params.commandId}`} backlink='/commands' />
+                                return <PageTitle pageName={`Commande ${params.commandId}`} backlink='/commands' editionDrawer={<PenLine size={20} className="text-blue-600" />} />
                             }
                         }
                     }

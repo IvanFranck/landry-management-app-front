@@ -36,3 +36,11 @@ export async function fetchAllCommandsQuery(){
                     .get(API_ROUTES.COMMANDS)
                     .then((resp: AxiosResponse<TGenericResponse<CommandsEntity[]>>) => resp.data.details)
 }
+
+export async function fetchCommandById(id: number) {
+    return await axiosInstance
+                .get(`${API_ROUTES.COMMANDS}/${id}`)
+                .then((resp: AxiosResponse<TGenericResponse<CommandsEntity>>) => {
+                    return resp.data.details
+                })
+}

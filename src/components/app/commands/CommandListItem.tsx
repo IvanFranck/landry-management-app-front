@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { CommandsEntity } from "@/lib/types/entities"
 import { formatDate } from "date-fns"
 import { fr } from "date-fns/locale"
+import { useNavigate } from "react-router-dom"
 
 
 export interface CommandListItemProps {
@@ -10,13 +11,11 @@ export interface CommandListItemProps {
 
 export const CommandListItem = ({ command }: CommandListItemProps) => {
 
-    // const handleCLick = () => {
-
-    // }
+    const navigate = useNavigate()
 
     return (
 
-        <Card>
+        <Card onClick={() => navigate(`/commands/${command.id}`)} className="cursor-pointer">
             <CardHeader>
                 <CardTitle className="text-lg flex justify-between">
                     <span>{command.code.code}</span>
